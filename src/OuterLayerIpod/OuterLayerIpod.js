@@ -20,7 +20,8 @@ class OuterLayerIpod extends React.Component{
                     menuVisible : false,
                     bigStatus : true,
                 }
-            ]
+            ],
+            menuOn : false
             
         }
     }
@@ -55,9 +56,26 @@ class OuterLayerIpod extends React.Component{
         });
     }
 
+    menuOnOff = () => {
+        const { menuOn } = this.state;
+        if (menuOn){
+            this.setState({
+                menuOn: false
+            })
+        }else{
+            this.setState({
+                menuOn: true
+            })
+        }
+        // console.log(this.state);
+        
+    }
+
+
     
 
     render(){
+        const { menuOn } = this.state;
         return(
             
             <div className='outerLayer'>
@@ -67,13 +85,15 @@ class OuterLayerIpod extends React.Component{
                 <div className='screen'>
                     <StatusBar />
                     <div className='belowStatus'>
-                        <MainMenu/>
+                        <MainMenu
+                            menuOn = {menuOn}
+                        />
                         <Homepage />
                     </div>
                 </div>
                 <div id="outercontainer" className='buttons' onClick={this.rotation}>
                     <div className='menuButton'>
-                        <span className='menuSpan'>MENU</span>
+                        <span className='menuSpan' onClick={this.menuOnOff}>MENU</span>
                     </div>
                     <div className='prevnextButtons'>
                         <div className='prevButton'>

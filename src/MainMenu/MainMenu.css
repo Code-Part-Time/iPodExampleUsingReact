@@ -7,8 +7,11 @@
     width: 31%;
     background-color: aliceblue;
     z-index: 10;
-    /* margin-left: -155px; */
     transition: 0.5s;
+    margin-left: -155px;
+}
+.hideMenu{
+    margin-left: 0px !important;
 }
 .mainMenuName{
     margin: 0px;

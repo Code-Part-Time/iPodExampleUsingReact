@@ -17,6 +17,7 @@
     border-radius: 6px;
     background-color: white;
     overflow: hidden;
+    user-select: none;
 }
 .belowStatus{
     display: flex;
