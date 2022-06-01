@@ -11,30 +11,21 @@ import StatusBar from '../StatusBar/StatusBar';
 import MainMenu from '../MainMenu/MainMenu';
 import GamePage from '../GamePage/GamePage';
 import CoverPage from '../CoverPage/CoverPage';
+import sideMenu from '../GlobalVariables';
 
 class OuterLayerIpod extends React.Component{
     constructor(){
         super();
         this.state = {
-            // system : [
-            //     {
-            //         page : 'home',
-            //         menuVisible : false,
-            //         bigStatus : true,
-            //     }
-            // ],
             menuOn : false,
             currentlySelected : 'home',
             currentlyOpenedPage : 'home'
-
-            
         }
     }
 
     rotation = () => {
+        
         var pages = ['home', 'page1', 'page2', 'page3', 'page4'];
-        var { currentlySelected } = this.state;
-        var { menuOn } = this.state;
         var scrollPageName=pages[0];
         var i=0;
 
@@ -42,72 +33,57 @@ class OuterLayerIpod extends React.Component{
         var region = ZingTouch.Region(target);
 
         var currentAngle=0;
-        var change = 0;
+        var angles = 360/pages.length;
         
-        this.state.enter = this.state.enter + 1;
+        var startAngles = [];
+        var endAngles = [];
+        var tempAngle=0;
+
+        for(var i=0;i<pages.length;i++){
+            startAngles.push(tempAngle);
+            tempAngle = tempAngle + angles;
+            endAngles.push(tempAngle);
+            tempAngle=tempAngle+1;
+        }
 
         region.bind(target, 'rotate', (e) => {
-            currentAngle = e.detail.distanceFromLast;
+            currentAngle = e.detail.distanceFromOrigin;
 
-            if(menuOn){
-                if(currentAngle < 0){
-                    // console.log(change);
-                    change--;
-                    if(change === -15){
-                        console.log("change state minus");
-                        change = 0;
-    
-                        scrollPageName = pages[i]
-                        i=i-1;
-                        if(i<0){
-                            i=pages.length-1;
-                        }
-                        currentlySelected = scrollPageName;
-                        this.setState({
-                            currentlySelected: currentlySelected
-                        })
-                        console.log(this.state);
-                    }
-                }else{
-                    // console.log(change);
-                    change++;
-                    if(change === 15){
-                        console.log("change state plus");
-                        change = 0;
-    
-                        scrollPageName = pages[i]
-                        i=i+1;
-                        if(i>pages.length-1){
-                            i=0;
-                        }
-                        currentlySelected = scrollPageName;
-                        this.setState({
-                            currentlySelected: currentlySelected
-                        })
-                        console.log(this.state);
-    
-    
-                    }
+            console.log(e.detail.angle);
+            // console.log(sideMenu.menuStats);
+
+            for(var i=0;i<pages.length;i++){
+                if(e.detail.angle>startAngles[pages.length-1-i] && e.detail.angle<endAngles[pages.length-1-i] && sideMenu.menuStats==true){
+                    console.log('rendered');
+                    scrollPageName = pages[i];
+
+                    this.setState({
+                        currentlySelected: scrollPageName
+                    })
                 }
             }
-            
-        });
-        
+        })
     }
 
     menuOnOff = () => {
         const { menuOn } = this.state;
         if (menuOn){
-            this.setState({
-                menuOn: false
+            sideMenu.changeMenuStats = false;
+            this.setState(() => {
+                return { 
+                    menuOn: false 
+                }
             })
         }else{
-            this.setState({
-                menuOn: true
+            sideMenu.changeMenuStats = true;
+            this.setState(() => {
+                return {
+                    menuOn: true
+                }
             })
         }
-        // console.log(this.state);
-        
+        // console.log(sideMenu.menuStats);
+        // return (menuOn);
     }
 
 
@@ -116,6 +92,7 @@ class OuterLayerIpod extends React.Component{
     render(){
         const { menuOn } = this.state;
         const { currentlySelected } = this.state;
+        // console.log(this.state);
         return(
             
             <div className='outerLayer'>
@@ -129,12 +106,13 @@ class OuterLayerIpod extends React.Component{
                             menuOn = { menuOn }
                             currentlySelected = { currentlySelected }
                         />
+
                         <CoverPage />
                         {/* <GamePage /> */}
                         {/* <Homepage /> */}
                     </div>
                 </div>
-                <div id="outercontainer" className='buttons' onClick={this.rotation}>
+                <div id="outercontainer" className='buttons' onClick={() => this.rotation()}>
                     <div className='menuButton'>
                         <span className='menuSpan' onClick={this.menuOnOff}>MENU</span>
                     </div>
@@ -144,7 +122,7 @@ class OuterLayerIpod extends React.Component{
                             <FontAwesomeIcon icon={faBackwardFast} className='icon1'/>
                             </span>
                         </div>
-                        <div className='centreButton'></div>
+                        <div className='centreButton' id="innercontainer"></div>
                         <div className='nextButton'>
                             <span className='spanIcons'>
                                 <FontAwesomeIcon icon={faForwardFast} className='icon1'/>

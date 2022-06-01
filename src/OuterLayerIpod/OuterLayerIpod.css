@@ -24,6 +24,7 @@
     justify-content: flex-start;
     height: 92%;
     width: 161%;
+    user-select: none;
 }
 .buttons{
     width: 53%;
