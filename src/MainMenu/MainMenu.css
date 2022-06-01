@@ -43,3 +43,7 @@
     padding-left: 5px;
     padding-right: 10px;
 }
+.currentlySelected{
+    background-color: lightblue;
+
+}
