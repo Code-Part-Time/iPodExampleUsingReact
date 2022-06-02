@@ -4,7 +4,7 @@ const sideMenu = {
     onSelect: 'home'
 }
 
-// getting property
+// GETTING PROPERTIES
 Object.defineProperty(sideMenu, "getMenuStats", {
     get : function () {
         return this.menuStats;
@@ -17,7 +17,8 @@ Object.defineProperty(sideMenu, "getOnSelect", {
     }
 });
 
-// setting property
+
+// SETTING PROPERTIES
 Object.defineProperty(sideMenu, "changeMenuStats", {
     set : function (value) {
         this.menuStats = value;

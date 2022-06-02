@@ -1,0 +1,9 @@
+.musicDiv{
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 5px solid green;
+    width: 307px;
+}

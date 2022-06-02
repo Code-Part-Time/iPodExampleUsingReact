@@ -16,7 +16,6 @@ class StatusBar extends React.Component{
         this.state = {
             time : '',
             wifi : false,
-            battery : '',
         }
     }
 
@@ -50,9 +49,11 @@ class StatusBar extends React.Component{
         return strTime;
     }
 
+    // setInterval(function () {element.innerHTML += "Hello"}, 1000);
+
     render(){
         // console.log('this.props',this.props.system);
-        const { time, wifi, battery } = this.state;
+        const { time, wifi} = this.state;
     return (
         <div className='StatusBarDiv'>
             <div className='rightStats'>

@@ -12,6 +12,8 @@ import MainMenu from '../MainMenu/MainMenu';
 import GamePage from '../GamePage/GamePage';
 import CoverPage from '../CoverPage/CoverPage';
 import sideMenu from '../GlobalVariables';
+import MusicPage from '../MusicPage/MusicPage';
+import SettingsPage from '../SettingsPage/SettingsPage';
 
 class OuterLayerIpod extends React.Component{
     constructor(){
@@ -27,7 +29,6 @@ class OuterLayerIpod extends React.Component{
         
         var pages = ['home', 'page1', 'page2', 'page3', 'page4'];
         var scrollPageName=pages[0];
-        var i=0;
 
         var target = document.getElementById('outercontainer');
         var region = ZingTouch.Region(target);
@@ -53,7 +54,7 @@ class OuterLayerIpod extends React.Component{
             // console.log(sideMenu.menuStats);
 
             for(var i=0;i<pages.length;i++){
-                if(e.detail.angle>startAngles[pages.length-1-i] && e.detail.angle<endAngles[pages.length-1-i] && sideMenu.menuStats==true){
+                if(e.detail.angle>startAngles[pages.length-1-i] && e.detail.angle<endAngles[pages.length-1-i] && sideMenu.menuStats===true){
                     console.log('rendered');
                     scrollPageName = pages[i];
 
@@ -86,12 +87,25 @@ class OuterLayerIpod extends React.Component{
         // return (menuOn);
     }
 
+    enterPage = (currentlySelected) => {
+        console.log(currentlySelected);
+        this.setState(() => {
+            return {
+                currentlyOpenedPage : currentlySelected,
+                menuOn: false
+            }
+        })
+        sideMenu.changeMenuStats = false;
+        // console.log(this.state.currentlyOpenedPage);
+    }
+
 
     
 
     render(){
         const { menuOn } = this.state;
         const { currentlySelected } = this.state;
+        const { currentlyOpenedPage } = this.state;
         // console.log(this.state);
         return(
             
@@ -106,10 +120,11 @@ class OuterLayerIpod extends React.Component{
                             menuOn = { menuOn }
                             currentlySelected = { currentlySelected }
                         />
-
-                        <CoverPage />
-                        {/* <GamePage /> */}
-                        {/* <Homepage /> */}
+                        {(currentlyOpenedPage === 'page4') && <SettingsPage />}
+                        {(currentlyOpenedPage === 'page1') && <MusicPage />}
+                        {(currentlyOpenedPage === 'page2') && <CoverPage />}
+                        {(currentlyOpenedPage === 'page3') && <GamePage />}
+                        {(currentlyOpenedPage === 'home') && <Homepage />}
                     </div>
                 </div>
                 <div id="outercontainer" className='buttons' onClick={() => this.rotation()}>
@@ -122,7 +137,7 @@ class OuterLayerIpod extends React.Component{
                             <FontAwesomeIcon icon={faBackwardFast} className='icon1'/>
                             </span>
                         </div>
-                        <div className='centreButton' id="innercontainer"></div>
+                        <div className='centreButton' id="innercontainer" onClick={() => this.enterPage(currentlySelected)}></div>
                         <div className='nextButton'>
                             <span className='spanIcons'>
                                 <FontAwesomeIcon icon={faForwardFast} className='icon1'/>
